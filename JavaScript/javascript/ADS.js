@@ -38,6 +38,18 @@
     }
     window['ADS']['addEvent'] = addEvent;
     function removeEvent(node, type, listener) {
+        if (!(node = $(node))) return false;
+        if (node.removeEventListener) {
+            node.removeEventListener(type, listener, false);
+            return true;
+        }
+        else if(node.detachEvent) {
+            node.detachEvent('on'+type,node[type+listener]);
+            node[type+listener]=null;
+            return true;
+        }
+
+        
 
     }
     window['ADS']['removeEvent'] = removeEvent;
