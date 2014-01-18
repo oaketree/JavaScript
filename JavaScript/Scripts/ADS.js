@@ -8,11 +8,50 @@
         return true;
     }
     window['ADS']['isCompatible']=isCompatible;
-    function $() { }
+    function $() {
+        var elements = new Array();
+        for (var i = 0; i < arguments.length; i++) {
+            var element = arguments[i];
+            if (typeof element == 'string') {
+                element = document.getElementById(element);
+            }
+            if (arguments.length == 1)
+                return element;
+            elements.push(element);
+        }
+    }
     window['ADS']['$'] = $;
-    function addEvent(node, type, listener) { }
+    function addEvent(node, type, listener) {
+        if (!isCompatible()) return false;
+        if (!(node = $(node))) return false;
+        if (node.addEventListener(type, listener, false)) return true;
+        else if (node.attachEvent) {
+            node['e' + type + listener] = listener;
+            node[type + listener] = function () {
+                node['e' + type + listener](window.event);
+            }
+            node.attachEvent('on' + type, node[type + listener]);
+            return true;
+        }
+        return false;
+
+    }
     window['ADS']['addEvent'] = addEvent;
-    function removeEvent(node, type, listener) { }
+    function removeEvent(node, type, listener) {
+        if (!(node = $(node))) return false;
+        if (node.removeEventListener) {
+            node.removeEventListener(type, listener, false);
+            return true;
+        }
+        else if(node.detachEvent) {
+            node.detachEvent('on'+type,node[type+listener]);
+            node[type+listener]=null;
+            return true;
+        }
+
+        
+
+    }
     window['ADS']['removeEvent'] = removeEvent;
     function getElementByClassName(className, tag, parent) { }
     window['ADS']['getElementByClassName'] = getElementByClassName;
@@ -24,6 +63,11 @@
     window['ADS']['removeChildren'] = removeChildren;
     function prependChild(parent, newChild) { }
     window['ADS']['prependChild'] = prependChild;
+    function exampleLibraryMethod(obj) {
+        if(!(obj=$(obj)))
+            return false;
+    }
+    window['ADS']['exampleLibraryMethod'] = exampleLibraryMethod;
 
     
 
