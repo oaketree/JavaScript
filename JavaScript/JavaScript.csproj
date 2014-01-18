@@ -58,7 +58,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="html\Chapter1.html" />
-    <Content Include="javascript\ADS.js" />
+    <Content Include="Scripts\ADS.js" />
+    <None Include="Scripts\_references.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
